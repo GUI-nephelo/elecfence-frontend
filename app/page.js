@@ -1,10 +1,12 @@
 import Image from 'next/image'
+import { Button } from 'antd'
 import styles from './page.module.css'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+      <Button href="/sign-in">登陆</Button>
+      {/* <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.js</code>
@@ -89,7 +91,7 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
-      </div>
+      </div> */}
     </main>
   )
 }
