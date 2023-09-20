@@ -4,6 +4,6 @@
 ## 技术栈
 - 🌹 UI库：Ant desige
 - 🌐框架: Next.js(vercel)
-- 🔒身份验证: Clerk.js
+- 🔒身份验证: NextAuth
 ## 开发进度
 ...

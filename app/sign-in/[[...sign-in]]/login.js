@@ -1,20 +1,32 @@
 import React from "react";
-import { Form, Input, Button, Row, Col, Card } from "antd";
-import { useUser,SignIn,useAuth,useClerk } from "@clerk/clerk-react";
-// import {clerk} from "@clerk/clerk-sdk-node"
+import { Form, Input, Button, Row, Col, Card,Alert } from "antd";
+import { signIn,useSession } from "next-auth/react";
+import { useRouter } from 'next/router';
+import { useEffect,useState } from 'react';
+import { useSearchParams } from 'next/navigation'
 
-const Login = () => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-    clerk.signIn(values.username, values.password)
-      .then(() => {
-        // 登录成功后，可以执行其他操作，如重定向到其他页面
-      })
-      .catch((error) => {
-        // 处理登录错误
-        console.error('Login error:', error);
+const Login = ({query}) => {
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams["callbackUrl"]||"/"
+  const { data: session, status } = useSession()
+  if(status=="authenticated"){
+    document.location = callbackUrl
+  }
+  const [isVisible, setIsVisible] = useState(false);
+
+  const onFinish = async ({ username, password}) => {
+    
+      const result = await signIn('credentials', {
+        redirect: false,
+        username: username,
+        password: password,
+        callbackUrl:callbackUrl
       });
+
+      console.log(result)
+      setIsVisible(!result.ok)
   };
+
 
   return (
     // 创建一个包含登录界面的行，使其在页面中垂直居中
@@ -28,10 +40,10 @@ const Login = () => {
         <Card>
           {/* 展示欢迎标题 */}
           <h1 style={{ textAlign: "center", marginBottom: 20 }}>
-            Welcome to Our App
+            欢迎来到电子围栏数据查询系统
           </h1>
           {/* 创建登录表单 */}
-          <Form name="login" onFinish={onFinish}>
+          <Form name="login" id="form" onFinish={onFinish}>
             {/* 用户名输入框 */}
             <Form.Item
               name="username"
@@ -51,6 +63,15 @@ const Login = () => {
             >
               <Input.Password placeholder="Password" />
             </Form.Item>
+            {isVisible &&
+            <>
+            <Alert message="用户或密码错误" type="error" showIcon />
+            <br/>
+            </>
+            }
+            
+            
+            
 
             {/* 登录按钮 */}
             <Form.Item>
@@ -59,14 +80,14 @@ const Login = () => {
                 htmlType="submit"
                 style={{ width: "100%" }}
               >
-                Log in
+                登陆
               </Button>
             </Form.Item>
           </Form>
           {/* 显示“创建账号”的链接 */}
           <div style={{ textAlign: "center" }}>
             <p>
-              Don&apos;t have an account? <a href="#">Create one&rsquo;squo;</a>
+              没有账户？请联系管理员
             </p>
           </div>
         </Card>

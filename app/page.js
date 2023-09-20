@@ -1,15 +1,25 @@
+'use client'
 import Image from 'next/image'
 import { Button } from 'antd'
 import styles from './page.module.css'
+import { useSession, signIn, signOut, getSession } from "next-auth/react"
 
 export default function Home() {
+  const session = useSession()
+  // const token = await getCsrfToken()
+  // console.log(session)
+  
+  
+  // console.log(sessionId, userId)
+
   return (
     <main className={styles.main}>
-      <Button href="/sign-in">登陆</Button>
-      {/* <div className={styles.description}>
+      {/* <Button href="/sign-in">登陆</Button> */}
+      <div className={styles.description}>
         <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
+          {/* Get started by editing&nbsp;
+          <code className={styles.code}>app/page.js</code> */}
+          {JSON.stringify(session)}
         </p>
         <div>
           <a
@@ -91,7 +101,7 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
-      </div> */}
+      </div>
     </main>
   )
 }

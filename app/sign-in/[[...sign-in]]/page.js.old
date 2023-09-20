@@ -1,0 +1,26 @@
+import { SignIn } from '@clerk/nextjs';
+import { Row, Col } from 'antd';
+
+export default function SignInPage() {
+  // <div className="flex items-center justify-center h-screen">
+        // <SignIn />
+      // </div>
+    return (
+      
+      <Row
+      style={{
+        height: '100vh', // 设置容器的高度为屏幕高度
+        display: 'flex', // 使用 flexbox 布局
+        alignItems: 'center', // 垂直居中
+        justifyContent: 'center', // 水平居中
+      }}
+    >
+      <Col>
+        {/* 这里放置你要居中显示的元素 */}
+        <div style={{ textAlign: 'center' }}>
+          <SignIn signUpUrl='/sign-up'/>
+        </div>
+      </Col>
+    </Row>
+    );
+  }
