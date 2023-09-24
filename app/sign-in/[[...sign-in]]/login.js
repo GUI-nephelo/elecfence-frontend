@@ -1,30 +1,32 @@
-import React from "react";
+
 import { Form, Input, Button, Row, Col, Card,Alert } from "antd";
-import { signIn,useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect,useState } from 'react';
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams,redirect } from 'next/navigation'
+import { getCurrentSession } from "@/lib/session";
 
-const Login = ({query}) => {
+
+export default function Login({query}){
   const searchParams = useSearchParams()
   const callbackUrl = searchParams["callbackUrl"]||"/"
-  const { data: session, status } = useSession()
-  if(status=="authenticated"){
-    document.location = callbackUrl
-  }
+
+  
+
   const [isVisible, setIsVisible] = useState(false);
 
   const onFinish = async ({ username, password}) => {
-    
-      const result = await signIn('credentials', {
-        redirect: false,
-        username: username,
-        password: password,
-        callbackUrl:callbackUrl
-      });
 
-      console.log(result)
-      setIsVisible(!result.ok)
+    const result = await signIn('credentials', {
+      redirect: false,
+      username: username,
+      password: password,
+      callbackUrl:callbackUrl
+    });
+
+    console.log(result)
+    setIsVisible(!result.ok)
+    if(result.ok) document.location=callbackUrl
   };
 
 
@@ -33,7 +35,7 @@ const Login = ({query}) => {
     <Row
       justify="center"
       align="middle"
-      style={{ minHeight: "100vh", backgroundColor: "#f0f4f8" }}
+      style={{minHeight:"100vh", backgroundColor: "#f0f4f8" }}
     >
       <Col xs={20} sm={16} md={12} lg={8}>
         {/* 使用卡片容器来包裹登录表单 */}
@@ -96,4 +98,3 @@ const Login = ({query}) => {
   );
 };
 
-export default Login;

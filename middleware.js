@@ -1,3 +1,4 @@
+import { getToken } from "next-auth/jwt"
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from 'next/server'
 
@@ -16,12 +17,25 @@ import { NextResponse } from 'next/server'
 // })
 // export { default } from "next-auth/middleware"
 export default withAuth(
-    function middleware(req) {
-        const jwt = req.nextauth.token
-        console.log(req.url)
-        // `/admin` requires admin role
+    async function middleware(req) {
+        const jwt = await getToken({req})
+        // console.log(req.url)
+        // console.log(req.nextauth)
+        const isAuthPage = req.nextUrl.pathname.startsWith("/sign-in")
         
-        if (req.nextUrl.pathname === "/admin" && jwt.userRole != "admin") {
+        if(!!jwt){
+            if(req.nextUrl.pathname === "/sign-in" || req.nextUrl.pathname === "/"){
+                return NextResponse.redirect(new URL("/dashboard",req.url))
+            }
+        }
+            
+        if(!jwt){
+            if(isAuthPage)return null
+            return NextResponse.redirect(new URL("/sign-in",req.url))
+        }
+
+        // `/admin` requires admin role
+        if (req.nextUrl.pathname === "/dashboard/admin" && jwt.userRole != "admin") {
             return new NextResponse(
                 JSON.stringify({ success: false, message: 'Permission dened' ,token: jwt}),
                 { status: 401, headers: { 'content-type': 'application/json' } }
@@ -36,9 +50,9 @@ export default withAuth(
     {
         callbacks:{
             authorized({ token }){
-                return !!token
+                return true
             },
         },
     }
 )
-export const config = { matcher: ["/admin","/","/apis/:path*"] }
+export const config = { matcher: ["/dashboard/:path*","/","/apis/:path*","/sign-in(.*)"] }
