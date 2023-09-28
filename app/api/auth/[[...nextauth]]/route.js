@@ -16,5 +16,5 @@ import { authOptions } from '@/lib/auth';
   
 const handlers = NextAuth(authOptions);
 
-// export {handlers as GET, handlers as POST}
-export default handlers;
+export {handlers as GET, handlers as POST}
+// export default handlers;

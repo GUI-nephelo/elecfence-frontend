@@ -1,8 +1,6 @@
 
-
+import { MySpin } from "@/components/spin"
 
 export default function adminPageLoading(){
-    return (
-        <>loading</>
-    )
+    return (<><MySpin/><p>loading</p></>)
 }

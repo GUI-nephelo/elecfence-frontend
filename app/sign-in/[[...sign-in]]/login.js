@@ -1,7 +1,7 @@
 
 import { Form, Input, Button, Row, Col, Card,Alert } from "antd";
 import { signIn } from "next-auth/react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect,useState } from 'react';
 import { useSearchParams,redirect } from 'next/navigation'
 import { getCurrentSession } from "@/lib/session";
@@ -10,7 +10,7 @@ import { getCurrentSession } from "@/lib/session";
 export default function Login({query}){
   const searchParams = useSearchParams()
   const callbackUrl = searchParams["callbackUrl"]||"/"
-
+const router=useRouter()
   
 
   const [isVisible, setIsVisible] = useState(false);
@@ -26,7 +26,7 @@ export default function Login({query}){
 
     console.log(result)
     setIsVisible(!result.ok)
-    if(result.ok) document.location=callbackUrl
+    if(result.ok) router.push(callbackUrl)
   };
 
 

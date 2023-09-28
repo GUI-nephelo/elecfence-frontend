@@ -20,15 +20,16 @@ export default withAuth(
     async function middleware(req) {
         const jwt = await getToken({req})
         // console.log(req.url)
-        // console.log(req.nextauth)
+        // console.log(req)
         const isAuthPage = req.nextUrl.pathname.startsWith("/sign-in")
-        
+        if(req.nextUrl.pathname === "/jwt" ) 
+            return NextResponse.json(req.nextauth)
         if(!!jwt){
-            if(req.nextUrl.pathname === "/sign-in" || req.nextUrl.pathname === "/"){
+            if(req.nextUrl.pathname === "/sign-in" || req.nextUrl.pathname === "/")
                 return NextResponse.redirect(new URL("/dashboard",req.url))
-            }
-        }
             
+            
+        }
         if(!jwt){
             if(isAuthPage)return null
             return NextResponse.redirect(new URL("/sign-in",req.url))
@@ -55,4 +56,4 @@ export default withAuth(
         },
     }
 )
-export const config = { matcher: ["/dashboard/:path*","/","/apis/:path*","/sign-in(.*)"] }
+export const config = { matcher: ["/dashboard/:path*","/","/apis/:path*","/sign-in(.*)","/jwt"] }

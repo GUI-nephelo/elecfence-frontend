@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import { Table, Pagination } from "antd";
 
 const columns = [
@@ -25,52 +26,38 @@ const columns = [
   },
 ];
 
-const dataSource = [
-  {
-    key: "1",
-    id: "1",
-    name: "John Doe",
-    age: 32,
-  },
-  {
-    key: "2",
-    id: "2",
-    name: "Jane Smith",
-    age: 42,
-  },
-  {
-    key: "2",
-    id: "2",
-    name: "Jane Smith",
-    age: 42,
-  },{
-    key: "2",
-    id: "2",
-    name: "Jane Smith",
-    age: 42,
-  },{
-    key: "2",
-    id: "2",
-    name: "Jane Smith",
-    age: 42,
-  },
-  // 添加更多示例数据
-];
+const dataSource = [];
 
-const TablePage = ({ currentPage, handlePageChange }) => {
-  const pageSize = 10;
+for (var i = 0; i < 15; i++) {
+  var ii = `${i}`
+  dataSource.push({ key: ii, id: ii, name: ii, age: ii })
+}
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
+export function TablePage({ currentPage, total, pageSize, items }) {
 
-  console.log(columns)
+  const handlePageChange=(e)=>{
+    console.log(e)
+  }
+
+//   const tablePaginationConfig = {
+//     current: currentPage,
+//     pageSize: pageSize,
+//     onChange:handlePageChange,
+//     total: dataSource.length,
+//     showSizeChanger: true,
+//     showQuickJumper: true,
+//     // showTotal: total => `总共 ${total} 条数据`,
+//   }
+//  const [tpc,setTpc]= useState(tablePaginationConfig)
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "9px" }}>
       <Table
         columns={columns}
         dataSource={dataSource}
         pagination={false}
+        // pagination={tablePaginationConfig}
+        scroll={{y:390}}
         bordered // 添加表格边框
       />
       <Pagination
@@ -86,5 +73,3 @@ const TablePage = ({ currentPage, handlePageChange }) => {
     </div>
   );
 };
-
-export default TablePage;

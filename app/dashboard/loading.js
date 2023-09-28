@@ -1,5 +1,5 @@
-
+import { MySpin } from "@/components/spin"
 
 export default function dashboardPageLoading(){
-    return (<>loading</>)
+    return (<><MySpin/>loading</>)
 }

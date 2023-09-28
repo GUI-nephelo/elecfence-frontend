@@ -1,11 +1,12 @@
-// 'use client'
+'use client'
 import Image from 'next/image'
 import { Button } from 'antd'
 import styles from './page.module.css'
 import { getCurrentSession } from '@/lib/session'
+import { useSession } from 'next-auth/react'
 
-export default async function Home() {
-  const session = await getCurrentSession()
+export default function Home() {
+  const session = useSession ()
   // const token = await getCsrfToken()
   console.log(session)
   
