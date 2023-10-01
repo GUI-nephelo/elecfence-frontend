@@ -28,23 +28,21 @@ const searchUrl = (key) => {
 const searchKey = (url) => {
   return routeTable.filter(x => { return x[1] == url })[0][0]
 }
-function getItem(label, key, icon, children, type) {
+function getItem(label, key, icon, disabled = false) {
   return {
     key,
     icon,
-    children,
     label,
-    type,
+    disabled
   };
 }
 
 
-export default function DashboardLayoutClient({ children ,session:{user:{name:username}}}) {
+export default function DashboardLayoutClient({ children, session: { user: { name: username } } }) {
   const path = usePathname()
-  const items = [
-    getItem('Home', '1', <HomeOutlined />),
-    getItem('Administrator', '2', <UserOutlined />)
-  ];
+  const items = [getItem('Home', '1', <HomeOutlined />)];
+  // 判断是否是管理员
+  if ("admin" === username) items.push(getItem('Administrator', '2', <UserOutlined />))
 
   const [current, setCurrent] = useState(searchKey(path));
   const [collapsed, setCollapsed] = useState(true);
@@ -85,18 +83,18 @@ export default function DashboardLayoutClient({ children ,session:{user:{name:us
             justifyContent: "space-between"
           }}
         >
-              <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                style={{
-                  fontSize: '16px',
-                  width: 64,
-                  height: 64,
-                }}
-              />
-              {/* {JSON.stringify(session)} */}
-            <UserNav username={username}/>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: '16px',
+              width: 64,
+              height: 64,
+            }}
+          />
+          {/* {JSON.stringify(session)} */}
+          <UserNav username={username} />
         </Header>
         <Content
           style={{

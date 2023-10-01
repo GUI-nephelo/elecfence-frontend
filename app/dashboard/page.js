@@ -1,11 +1,16 @@
-import {TablePage} from "./table"
+import { notFound } from "next/navigation";
+import { TablePage } from "./table"
 
 
-function dashboardPage({params,searchParams}){
-    const page = Number("page" in searchParams?searchParams.page:"0");
-    const size = Number("size" in searchParams?searchParams.size:"5")
+function dashboardPage({ searchParams }) {
+    const page = Number("page" in searchParams ? searchParams.page : "1");
+    const pagesize = Number("pageSize" in searchParams ? searchParams.pageSize : "5")
 
-    return (<TablePage currentPage={page+1} pageSize={size}/>)
+    console.log(page, pagesize)
+    // 检测搜索字是否合法
+    if (isNaN(page) || isNaN(pagesize)) return notFound()
+
+    return (<TablePage currentPage={page} pageSize={pagesize} />)
 }
 
 export default dashboardPage

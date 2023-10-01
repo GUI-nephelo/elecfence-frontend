@@ -1,4 +1,4 @@
-
+"use client"
 import { Form, Input, Button, Row, Col, Card,Alert } from "antd";
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
@@ -15,7 +15,7 @@ const router=useRouter()
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const onFinish = async ({ username, password}) => {
+  const onFinish = async ({ username, password }) => {
 
     const result = await signIn('credentials', {
       redirect: false,
@@ -25,8 +25,10 @@ const router=useRouter()
     });
 
     console.log(result)
-    setIsVisible(!result.ok)
-    if(result.ok) router.push(callbackUrl)
+    
+    setIsVisible(!!result.error)
+    if (!result.error) router.push(callbackUrl)
+    else throw new Error(result.error)
   };
 
 
@@ -71,10 +73,6 @@ const router=useRouter()
             <br/>
             </>
             }
-            
-            
-            
-
             {/* 登录按钮 */}
             <Form.Item>
               <Button
