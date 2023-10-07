@@ -28,7 +28,7 @@ export async function GET() {
     for (var i in Object.keys(__data[0])) {
         colHeader.push({ headers: Object.keys(__data[0])[i], key: Object.keys(__data[0])[i], width: colW[i] })
     }
-    console.log(colHeader)
+    // console.log(colHeader)
     worksheet.columns = colHeader
 
     // 将数据数组添加到工作表
