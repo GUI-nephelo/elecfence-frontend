@@ -54,7 +54,6 @@ export function TablePage({ currentPage, total, pageSize, items }) {
     showQuickJumper: true,
     showTotal: total => `总共 ${total} 条数据`,
   }
-  // const [tpc, setTpc] = useState(tablePaginationConfig)
 
   return (
     <div style={{ padding: "9px" }}>

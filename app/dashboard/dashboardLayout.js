@@ -50,6 +50,7 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  // console.log(colorBgContainer)
 
   const router = useRouter()
 
@@ -59,6 +60,8 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
     router.push(searchUrl(e.key))
   };
 
+  // console.log(items)
+
   return (
     <Layout hassidder="true" style={{ overflow: "hidden" }}>
       <Sider style={{
@@ -67,8 +70,8 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
       }} trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
-          theme="dark"
           mode="inline"
+          theme="dark"
           defaultSelectedKeys={[current]}
           items={items}
           onClick={onClick}
@@ -101,7 +104,7 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
             margin: '18px 16px',
             padding: '15px',
             overflow: 'auto',
-            background: colorBgContainer,
+            // background: colorBgContainer,
           }}
         >
           {children}

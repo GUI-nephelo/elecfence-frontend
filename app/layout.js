@@ -1,8 +1,9 @@
 // 'use client'
-import AuthProvider from '@/components/AuthProvider'
+import { MyCookiesProvider, AuthProvider } from '@/components/provider'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,14 +14,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="zh">
-        <body className={inter.className}>
-          <AuthProvider>
+    <html lang="zh">
+      <body className={inter.className}>
+        <AuthProvider>
           {/* <SessionProvider> */}
-          {children}
+          <MyCookiesProvider>
+            {children}
+          </MyCookiesProvider>
           {/* </SessionProvider> */}
-          </AuthProvider>
-        </body>
-      </html>
+        </AuthProvider>
+      </body>
+    </html >
   )
 }

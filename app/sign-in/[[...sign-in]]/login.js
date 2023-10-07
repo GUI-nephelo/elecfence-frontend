@@ -1,17 +1,17 @@
 "use client"
-import { Form, Input, Button, Row, Col, Card,Alert } from "antd";
+import { Form, Input, Button, Row, Col, Card, Alert } from "antd";
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
-import { useEffect,useState } from 'react';
-import { useSearchParams,redirect } from 'next/navigation'
+import { useEffect, useState } from 'react';
+import { useSearchParams, redirect } from 'next/navigation'
 import { getCurrentSession } from "@/lib/session";
 
 
-export default function Login({query}){
+export default function Login({ query }) {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams["callbackUrl"]||"/"
-const router=useRouter()
-  
+  const callbackUrl = searchParams["callbacks"] || "/"
+  const router = useRouter()
+
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -21,11 +21,11 @@ const router=useRouter()
       redirect: false,
       username: username,
       password: password,
-      callbackUrl:callbackUrl
+      callbackUrl: callbackUrl
     });
 
     console.log(result)
-    
+
     setIsVisible(!!result.error)
     if (!result.error) router.push(callbackUrl)
     else throw new Error(result.error)
@@ -37,7 +37,7 @@ const router=useRouter()
     <Row
       justify="center"
       align="middle"
-      style={{minHeight:"100vh", backgroundColor: "#f0f4f8" }}
+      style={{ minHeight: "100vh", backgroundColor: "#f0f4f8" }}
     >
       <Col xs={20} sm={16} md={12} lg={8}>
         {/* 使用卡片容器来包裹登录表单 */}
@@ -68,10 +68,10 @@ const router=useRouter()
               <Input.Password placeholder="Password" />
             </Form.Item>
             {isVisible &&
-            <>
-            <Alert message="用户或密码错误" type="error" showIcon />
-            <br/>
-            </>
+              <>
+                <Alert message="用户或密码错误" type="error" showIcon />
+                <br />
+              </>
             }
             {/* 登录按钮 */}
             <Form.Item>
