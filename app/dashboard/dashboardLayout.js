@@ -6,7 +6,7 @@ import {
   AppstoreOutlined,
   ContainerOutlined,
   UserOutlined,
-  MailOutlined,
+  UnorderedListOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   HomeOutlined,
@@ -19,7 +19,8 @@ const { Header, Sider, Content } = Layout;
 
 const routeTable = [
   ['1', "/dashboard"],
-  ['2', "/dashboard/admin"]
+  ['2', "/dashboard/admin"],
+  ['3', "/dashboard/setBlackWhite"]
 ]
 
 const searchUrl = (key) => {
@@ -40,9 +41,12 @@ function getItem(label, key, icon, disabled = false) {
 
 export default function DashboardLayoutClient({ children, session: { user: { name: username } } }) {
   const path = usePathname()
-  const items = [getItem('Home', '1', <HomeOutlined />)];
+  const items = [getItem('表格', '1', <HomeOutlined />)];
   // 判断是否是管理员
-  if ("admin" === username) items.push(getItem('Administrator', '2', <UserOutlined />))
+  if ("admin" === username) {
+    items.push(getItem('管理用户', '2', <UserOutlined />))
+    items.push(getItem('设置黑白名单', '3', < UnorderedListOutlined />))
+  }
 
   const [current, setCurrent] = useState(searchKey(path));
   const [collapsed, setCollapsed] = useState(true);
@@ -104,6 +108,7 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
             margin: '18px 16px',
             padding: '15px',
             overflow: 'auto',
+            theme: "white"
             // background: colorBgContainer,
           }}
         >

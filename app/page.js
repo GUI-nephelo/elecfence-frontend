@@ -6,11 +6,11 @@ import { getCurrentSession } from '@/lib/session'
 import { useSession } from 'next-auth/react'
 
 export default function Home() {
-  const session = useSession ()
+  const session = useSession()
   // const token = await getCsrfToken()
   console.log(session)
-  
-  
+
+
   // console.log(sessionId, userId)
 
   return (

@@ -47,7 +47,7 @@ export function TablePage({ currentPage, total, pageSize, items }) {
     position: ['bottomLeft'],
     current: currentPage,
     pageSize: pageSize,
-    pageSizeOptions: [5, 8, 16, 15],
+    pageSizeOptions: [6, 12, 15],
     onChange: handlePageChange,
     total: total,//dataSource.length,
     showSizeChanger: true,

@@ -1,7 +1,8 @@
 import { Admin } from "./admin";
+import UserManagement from "./userMangement";
 
-export default function adminPage(){
+export default function adminPage() {
     return (
-        <Admin/>
+        <UserManagement />
     )
 }
