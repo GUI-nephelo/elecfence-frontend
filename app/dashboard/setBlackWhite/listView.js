@@ -2,62 +2,86 @@
 import { Button, Col, Form, Input, List, Row, Space } from "antd";
 import "./list.css"
 import { useState } from "react";
+import { BlackWhiteAddAction, BlackWhiteDeleteAction } from "../actions";
+import { useRouter } from "next/navigation";
+import { compareSync } from "bcryptjs";
 
 
-function ListView({ name, label, action, handleAdd, dataSource, handleDelete }) {
+function ListView({ name, label, handleAdd, dataSource, handleDelete }) {
+    const __handleDelete = async item => {
+        await handleDelete(item, name)
+    }
     return (
         <List
             size="large"
             className="min-width-list"
-            header={<h1>{label}</h1>}
-            footer={<InputNumForm {...{ name, label, action, handleAdd }} />}
+            header={<h1>{label}:手机号</h1>}
+            footer={<InputNumForm {...{ name, label, handleAdd }} />}
             dataSource={dataSource}
             bordered
             renderItem={item => (
                 <List.Item>
                     <p>{item}</p>
-                    <Button type="link" onClick={() => handleDelete(item, name)}>删除</Button>
+                    <Button type="link" onClick={async () => await __handleDelete(item)}>删除</Button>
                 </List.Item>
             )}
         />
     )
 }
 
-function InputNumForm({ name, label, action, handleAdd }) {
+function InputNumForm({ name, label, handleAdd }) {
     const [value, setValue] = useState("")
     // 只允许输入数字字符
     const onChange = e => {
         if (!isNaN(Number(e.target.value))) setValue(e.target.value)
     }
+
+    const __handleAdd = async (obj) => {
+        setValue("");
+        await handleAdd(obj, name);
+    }
     return (
-        <Form action={action} onFinish={(obj) => { handleAdd(obj, name) }}>
+        <Form onFinish={__handleAdd}>
             <Form.Item name={name} rules={[{ required: true, message: '请输入电话号' }]}>
                 <Space.Compact>
-                    <Input placeholder={`添加${label}`} value={value} onChange={onChange} />
-                    <Button type="primary" htmlType="submit" onClick={() => setValue("")}>提交</Button>
+                    <Input placeholder={`添加${label}`} {...{ value, onChange }} />
+                    <Button type="primary" htmlType="submit">提交</Button>
                 </Space.Compact>
             </Form.Item>
         </Form>
     )
 }
 
-export function BlackWhiteListView() {
-    const [list, setList] = useState({ whiteList: [], blackList: [] })
+export function BlackWhiteListView({ initialList }) {
+    console.log(initialList)
 
-    const handleAdd = (e, key) => {
+    const router = useRouter()
+    const [list, setList] = useState(/*{ whiteList: [], blackList: [] }*/initialList)
+
+    const handleAdd = async (e, key) => {
+        if (list[key].includes(e[key])) return
+
         setList(prevList => {
-            return { ...prevList, [key]: [...prevList[key], e[key]] };
+            return {
+                ...prevList,
+                [key]: [...prevList[key], e[key]]
+            };
         });
-        // TODO: 在数据库添加
+
+        await BlackWhiteAddAction({ ...e, key });
+        // router.refresh()
+        // console.log(list)
     };
-    const handleDelete = (item, key) => {
+    const handleDelete = async (blackList, key) => {
+        // if (!(list[key].includes(blackList[key]))) return;
         setList(prevList => ({
             ...prevList,
-            [key]: prevList[key].filter(entry => entry !== item)
+            [key]: prevList[key].filter(entry => entry !== blackList)
         }));
-        // TODO: 在数据库删除 
+        await BlackWhiteDeleteAction({ blackList, key })
+        // router.refresh()
     };
-    console.log("view")
+    // console.log("view")
     return (
         <Row justify="space-around" wrap={true}>
             <Col span={9}>
@@ -65,8 +89,6 @@ export function BlackWhiteListView() {
                     name={"blackList"}
                     label={"黑名单"}
                     dataSource={list.blackList}
-                    // handleDelete={handleDelete}
-                    // handleAdd={handleAdd}
                     {...{ handleAdd, handleDelete }}
                 />
             </Col>
@@ -75,8 +97,6 @@ export function BlackWhiteListView() {
                     name={"whiteList"}
                     label={"白名单"}
                     dataSource={list.whiteList}
-                    // handleDelete={handleDelete}
-                    // handleAdd={handleAdd}
                     {...{ handleAdd, handleDelete }}
                 />
             </Col>

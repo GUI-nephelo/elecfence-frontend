@@ -14,7 +14,7 @@ function assign(obj, k, v) {
 export function ExtraComponent() {
     const router = useRouter()
     const [cookies, setCookie] = useCookies()
-    const setFilter = (v) => { setCookie("filter", v) }
+    const setFilter = (v) => { setCookie("filter", v, { path: "/" }) }
 
 
     const [whichCol, setWhichCol] = useState(dataSearchCol)

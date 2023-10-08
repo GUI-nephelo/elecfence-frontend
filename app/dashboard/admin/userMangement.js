@@ -1,20 +1,19 @@
 "use client"
 import React, { useState } from 'react';
-import { Form, Input, Button, Table, Space, Modal } from 'antd';
-import { userMgeAction } from '../actions';
+import { Form, Input, Button, Table, Space, Modal, message } from 'antd';
+import { userMgeAddAction, userMgeDeleteAction } from '../actions';
 
 const { confirm } = Modal;
 
-const UserManagement = () => {
+const UserManagement = ({ initialList }) => {
     const [form] = Form.useForm();
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(initialList);
 
     const handleAddUser = () => {
         form.validateFields().then(values => {
             const newUser = {
-                id: Date.now(),
-                name: values.name,
-                email: values.email,
+                user: values.user,
+                pass: values.pass,
             };
             setUsers([...users, newUser]);
             form.resetFields();
@@ -24,44 +23,55 @@ const UserManagement = () => {
     const handleDeleteUser = user => {
         confirm({
             title: '确认删除',
-            content: `确定要删除用户 ${user.name} 吗？`,
+            content: `确定要删除用户 ${user.user} 吗？`,
             okText: '删除',
             cancelText: '取消',
             onOk: () => {
-                const updatedUsers = users.filter(u => u.id !== user.id);
+                const updatedUsers = users.filter(u => u.user !== user.user);
                 setUsers(updatedUsers);
             },
         });
     };
 
+    const __userMgeAddAction = async obj => {
+        // console.log(obj)
+        // console.log(users)
+        if (users.some(x => x.user == obj.user)) {
+            message.error("用户已存在")
+            return;
+        }
+        handleAddUser()
+        await userMgeAddAction(obj)
+    }
 
-
+    const __userMgeDelAction = async obj => {
+        handleDeleteUser(obj)
+        await userMgeDeleteAction(obj)
+    }
     const columns = [
-        { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Email', dataIndex: 'email', key: 'email' },
+        { title: '用户名', dataIndex: 'user', key: 'user' },
+        { title: '密码', dataIndex: 'pass', key: 'pass' },
         {
             title: 'Action',
             key: 'action',
-            render: (_, user) => (
+            render: obj => (
                 <Space>
-                    <Button danger onClick={() => handleDeleteUser(user)}>删除</Button>
+                    <Button danger onClick={() => __userMgeDelAction(obj)}>删除</Button>
                 </Space>
             ),
         },
     ];
-
     return (
         <div>
-            <Form form={form} action={userMgeAction} onFinish={userMgeAction} layout="inline">
-                <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please input name' }]}>
+            <Form form={form} onFinish={__userMgeAddAction} layout="inline">
+                <Form.Item name="user" label="用户名" rules={[{ required: true, message: 'Please input name' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please input email' }]}>
+                <Form.Item name="pass" label="密码" rules={[{ required: true, message: 'Please input pass' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item>
-                    {/* <Button type="primary" onClick={handleAddUser}>添加用户</Button> */}
-                    <Button type="primary" htmlType="submit">添加用户</Button>
+                <Form.Item >
+                    <Button type="primary" htmlType="submit" >添加用户</Button>
                 </Form.Item>
             </Form>
             <br />

@@ -1,7 +1,8 @@
 'use client'
 import React, { useState } from "react";
-import { Table, Pagination } from "antd";
+import { Table, Space, Button } from "antd";
 import { useRouter } from "next/navigation";
+import { BlackWhiteAddAction } from "./actions";
 
 const columns = [
   {
@@ -32,8 +33,30 @@ const columns = [
     key: "phoneNum",
     width: 80,
     align: "center",
+  },
+  {
+    title: "操作",
+    // dataIndex: "",
+    // key: "phoneNum",
+    width: 80,
+    align: "center",
+    render: ({ phoneNum }) => (
+      <>
+        {/* <Space size="small"> */}
+        <Button type="link" onClick={
+          async () => {
+            await BlackWhiteAddAction({ key: "blackList", blackList: phoneNum })
+          }}>加入黑名单</Button>
+        <Button type="link" onClick={
+          async () => {
+            await BlackWhiteAddAction({ key: "whiteList", whiteList: phoneNum })
+          }}>加入白名单</Button>
+        {/* </Space> */}
+      </>
+    )
   }
 ];
+
 
 export function TablePage({ currentPage, total, pageSize, items }) {
   const router = useRouter()
@@ -65,17 +88,6 @@ export function TablePage({ currentPage, total, pageSize, items }) {
         // scroll={{y:390}}
         bordered // 添加表格边框
       />
-      {/* <Pagination
-        current={currentPage}
-        pageSize={pageSize}
-        onChange={handlePageChange}
-        onShowSizeChange={handleSizeChange}
-        total={dataSource.length}
-        showSizeChanger
-        showQuickJumper
-        showTotal={(total) => `总共 ${total} 条数据`}
-        style={{ marginTop: "20px", textAlign: "center" }}
-      /> */}
     </div>
   );
 };

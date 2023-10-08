@@ -1,5 +1,5 @@
 // 'use client'
-import { MyCookiesProvider, AuthProvider } from '@/components/provider'
+import { AuthProvider } from '@/components/provider'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
@@ -18,9 +18,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <AuthProvider>
           {/* <SessionProvider> */}
-          <MyCookiesProvider>
-            {children}
-          </MyCookiesProvider>
+          {children}
           {/* </SessionProvider> */}
         </AuthProvider>
       </body>

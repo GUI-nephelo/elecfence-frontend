@@ -14,6 +14,7 @@ import {
 import { Row, Col, Dropdown, Icon, Menu, DatePicker, Layout, Button, theme } from 'antd'
 import UserNav from "@/components/userNav";
 import { useSession } from "next-auth/react";
+import { MyCookiesProvider } from "@/components/provider";
 
 const { Header, Sider, Content } = Layout;
 
@@ -112,7 +113,9 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
             // background: colorBgContainer,
           }}
         >
-          {children}
+          <MyCookiesProvider>
+            {children}
+          </MyCookiesProvider>
         </Content>
       </Layout>
     </Layout>
