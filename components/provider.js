@@ -8,5 +8,5 @@ export function AuthProvider({ children }) {
 }
 
 export function MyCookiesProvider({ children }) {
-    return <CookiesProvider>{children}</CookiesProvider>
+    return <CookiesProvider defaultSetOptions={{ path: '/' }}>{children}</CookiesProvider>
 }

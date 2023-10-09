@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt"
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from 'next/server'
+import { protectedPath } from "./lib/config"
 
 // More on how NextAuth.js middleware works: https://next-auth.js.org/configuration/nextjs#middleware
 // export default withAuth({
@@ -35,7 +36,7 @@ export default withAuth(
 
 
         // `/admin` requires admin role
-        if (req.nextUrl.pathname === "/dashboard/admin" && jwt.userRole != "admin") {
+        if (protectedPath.includes(req.nextUrl.pathname) && jwt.userRole != "admin") {
             return new NextResponse(
                 JSON.stringify({ success: false, message: 'Permission dened', token: jwt }),
                 { status: 401, headers: { 'content-type': 'application/json' } }

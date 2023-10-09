@@ -1,8 +1,27 @@
 'use client'
-import React, { useState } from "react";
-import { Table, Space, Button } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Table, Space, Button, Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { BlackWhiteAddAction } from "./actions";
+
+const { confirm } = Modal;
+
+const confirmAdd = (listname, value, onOk) => {
+  confirm({
+    title: '确认加入',
+    content: `确定要将 ${value} 加入到 ${listname} 吗？`,
+    okText: '加入',
+    cancelText: '取消',
+    direction: "ltr",
+    onOk
+  });
+}
+
+// function ListPopconfirm({children}) {
+//   return (
+
+//   )
+// }
 
 const columns = [
   {
@@ -33,33 +52,41 @@ const columns = [
     key: "phoneNum",
     width: 80,
     align: "center",
-  },
-  {
-    title: "操作",
-    // dataIndex: "",
-    // key: "phoneNum",
-    width: 80,
-    align: "center",
-    render: ({ phoneNum }) => (
-      <>
-        {/* <Space size="small"> */}
-        <Button type="link" onClick={
-          async () => {
-            await BlackWhiteAddAction({ key: "blackList", blackList: phoneNum })
-          }}>加入黑名单</Button>
-        <Button type="link" onClick={
-          async () => {
-            await BlackWhiteAddAction({ key: "whiteList", whiteList: phoneNum })
-          }}>加入白名单</Button>
-        {/* </Space> */}
-      </>
-    )
   }
 ];
 
+const action = {
+  title: "操作",
+  // dataIndex: "",
+  // key: "phoneNum",
+  width: 80,
+  align: "center",
+  render: ({ phoneNum }) => (
+    <>
+      <Space size="small" direction="vertical">
+        <Button type="link" onClick={
+          () =>
+            confirmAdd("黑名单", phoneNum, async () => {
+              await BlackWhiteAddAction({ key: "blackList", blackList: phoneNum })
+            })
+        }
+        >加入黑名单</Button>
+        <Button type="link" onClick={() =>
+          confirmAdd("白名单", phoneNum,
+            async () => {
+              await BlackWhiteAddAction({ key: "whiteList", whiteList: phoneNum })
+            })}>加入白名单</Button>
+      </Space>
+    </>
+  )
+}
 
-export function TablePage({ currentPage, total, pageSize, items }) {
+
+export function TablePage({ currentPage, total, pageSize, items, permission }) {
   const router = useRouter()
+  if (permission == "admin" && columns.length < 5) columns.push(action);
+
+
 
   const handlePageChange = (page, pageSize) => {
     const params = new URLSearchParams({ page, pageSize })

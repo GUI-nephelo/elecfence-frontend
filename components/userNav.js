@@ -1,21 +1,17 @@
 import { Avatar, Button, Divider, Dropdown, Space } from "antd";
 import { UserOutlined } from '@ant-design/icons';
-import { getCurrentSession } from "@/lib/session";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
-
-
-import React, { useReducer } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { getServerSession } from "next-auth";
 
 
-export default function UserNav({ props,username }) {
+export default function UserNav({ name }) {
     const router = useRouter()
+    const { data, status } = useSession()
+    // var name = "name"
+    // if ("authenticated" === status) name = data.user.name;
 
-    // console.log(props)
-
-    // const {user:{name:name}} = await getCurrentSession();
     const userSignOut = async () => {
         await signOut({ redirect: false })
         router.push("/sign-in")
@@ -32,21 +28,10 @@ export default function UserNav({ props,username }) {
     ];
     return (
         // <div >
-        <Dropdown menu={{ items }}
-            // dropdownRender={(menu) => (
-            //     <div>
-            //         {React.cloneElement(menu)}
-            //         <Divider style={{ margin: "0" }} />
-            //         <Space style={{ padding: 8 }}>
-            //             <Button onClick={userSignOut} type="primary">注销</Button>
-            //         </Space>
-            //     </div>
-            // )}
-            
-            >
+        <Dropdown menu={{ items }}>
             <div style={{ display: 'flex', flexDirection: 'row', marginRight: '1rem' }}>
                 <Avatar style={{ margin: "auto 1rem" }} size="large" icon={<UserOutlined />} />
-                <div >欢迎! {username}</div>
+                <div >欢迎! {name}</div>
             </div>
         </Dropdown>
         // </div>

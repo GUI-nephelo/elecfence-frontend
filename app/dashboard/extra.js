@@ -31,7 +31,7 @@ export function ExtraComponent() {
     }, [router])
 
     const onSearch = async (t) => {
-        console.log(t)
+        // console.log(t)
         setFilter(assign(cookies["filter"], "searchString", t))
         setSearchString(t)
 
@@ -39,7 +39,7 @@ export function ExtraComponent() {
     }
 
     const onChange = async (v) => {
-        console.log(v)
+        // console.log(v)
         setFilter(assign(cookies["filter"], "whichCol", v))
         setWhichCol(v)
     }

@@ -40,11 +40,13 @@ function getItem(label, key, icon, disabled = false) {
 }
 
 
-export default function DashboardLayoutClient({ children, session: { user: { name: username } } }) {
+export default function DashboardLayoutClient({ children, session }) {
+  const { user: { name } } = session;
+
   const path = usePathname()
   const items = [getItem('表格', '1', <HomeOutlined />)];
   // 判断是否是管理员
-  if ("admin" === username) {
+  if ("admin" === name) {
     items.push(getItem('管理用户', '2', <UserOutlined />))
     items.push(getItem('设置黑白名单', '3', < UnorderedListOutlined />))
   }
@@ -101,8 +103,7 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
               height: 64,
             }}
           />
-          {/* {JSON.stringify(session)} */}
-          <UserNav username={username} />
+          <UserNav name={name} />
         </Header>
         <Content
           style={{
@@ -113,9 +114,7 @@ export default function DashboardLayoutClient({ children, session: { user: { nam
             // background: colorBgContainer,
           }}
         >
-          <MyCookiesProvider>
-            {children}
-          </MyCookiesProvider>
+          {children}
         </Content>
       </Layout>
     </Layout>

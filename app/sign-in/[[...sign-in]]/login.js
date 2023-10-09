@@ -24,7 +24,7 @@ export default function Login({ query }) {
       callbackUrl: callbackUrl
     });
 
-    console.log(result)
+    console.log(result, callbackUrl)
 
     setIsVisible(!!result.error)
     if (!result.error) router.push(callbackUrl)

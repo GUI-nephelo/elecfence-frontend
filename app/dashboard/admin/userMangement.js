@@ -6,6 +6,7 @@ import { userMgeAddAction, userMgeDeleteAction } from '../actions';
 const { confirm } = Modal;
 
 const UserManagement = ({ initialList }) => {
+
     const [form] = Form.useForm();
     const [users, setUsers] = useState(initialList);
 
@@ -21,7 +22,7 @@ const UserManagement = ({ initialList }) => {
     };
 
     const handleDeleteUser = user => {
-        confirm({
+        return new Promise((res, rej) => confirm({
             title: '确认删除',
             content: `确定要删除用户 ${user.user} 吗？`,
             okText: '删除',
@@ -29,13 +30,14 @@ const UserManagement = ({ initialList }) => {
             onOk: () => {
                 const updatedUsers = users.filter(u => u.user !== user.user);
                 setUsers(updatedUsers);
+                res(true)
             },
-        });
+            onCancel: () => res(false)
+        }))
+
     };
 
     const __userMgeAddAction = async obj => {
-        // console.log(obj)
-        // console.log(users)
         if (users.some(x => x.user == obj.user)) {
             message.error("用户已存在")
             return;
@@ -45,8 +47,8 @@ const UserManagement = ({ initialList }) => {
     }
 
     const __userMgeDelAction = async obj => {
-        handleDeleteUser(obj)
-        await userMgeDeleteAction(obj)
+        if (await handleDeleteUser(obj))
+            await userMgeDeleteAction(obj)
     }
     const columns = [
         { title: '用户名', dataIndex: 'user', key: 'user' },

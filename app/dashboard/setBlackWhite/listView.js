@@ -3,8 +3,7 @@ import { Button, Col, Form, Input, List, Row, Space } from "antd";
 import "./list.css"
 import { useState } from "react";
 import { BlackWhiteAddAction, BlackWhiteDeleteAction } from "../actions";
-import { useRouter } from "next/navigation";
-import { compareSync } from "bcryptjs";
+
 
 
 function ListView({ name, label, handleAdd, dataSource, handleDelete }) {
@@ -55,33 +54,27 @@ function InputNumForm({ name, label, handleAdd }) {
 export function BlackWhiteListView({ initialList }) {
     console.log(initialList)
 
-    const router = useRouter()
     const [list, setList] = useState(/*{ whiteList: [], blackList: [] }*/initialList)
 
     const handleAdd = async (e, key) => {
         if (list[key].includes(e[key])) return
-
         setList(prevList => {
             return {
                 ...prevList,
                 [key]: [...prevList[key], e[key]]
             };
         });
-
         await BlackWhiteAddAction({ ...e, key });
-        // router.refresh()
-        // console.log(list)
     };
-    const handleDelete = async (blackList, key) => {
+    const handleDelete = async (value, key) => {
         // if (!(list[key].includes(blackList[key]))) return;
         setList(prevList => ({
             ...prevList,
-            [key]: prevList[key].filter(entry => entry !== blackList)
+            [key]: prevList[key].filter(entry => entry !== value)
         }));
-        await BlackWhiteDeleteAction({ blackList, key })
-        // router.refresh()
+        await BlackWhiteDeleteAction({ [key]: value, key })
     };
-    // console.log("view")
+
     return (
         <Row justify="space-around" wrap={true}>
             <Col span={9}>
