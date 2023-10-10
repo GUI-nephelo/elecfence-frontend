@@ -11,10 +11,10 @@ import {
   MenuUnfoldOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
-import { Row, Col, Dropdown, Icon, Menu, DatePicker, Layout, Button, theme } from 'antd'
+import { Row, Col, Dropdown, Icon, Menu, DatePicker, Layout, Button, theme, Spin } from 'antd'
 import UserNav from "@/components/userNav";
 import { useSession } from "next-auth/react";
-import { MyCookiesProvider } from "@/components/provider";
+import { MySpin } from "@/components/spin";
 
 const { Header, Sider, Content } = Layout;
 
@@ -40,13 +40,16 @@ function getItem(label, key, icon, disabled = false) {
 }
 
 
-export default function DashboardLayoutClient({ children, session }) {
-  const { user: { name } } = session;
+export default function DashboardLayoutClient({ children }) {
+  var { data: session } = useSession()
+  if (!session) session = { user: { name: <MySpin /> } }
+  // console.log(session)
+  const { user: { name, userRole } } = session;
 
   const path = usePathname()
   const items = [getItem('表格', '1', <HomeOutlined />)];
   // 判断是否是管理员
-  if ("admin" === name) {
+  if ("admin" === userRole) {
     items.push(getItem('管理用户', '2', <UserOutlined />))
     items.push(getItem('设置黑白名单', '3', < UnorderedListOutlined />))
   }

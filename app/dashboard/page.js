@@ -4,7 +4,6 @@ import { TablePage } from "./table"
 import { getData, match_all } from "@/lib/db";
 import { ExtraComponent } from "./extra";
 import { cookies } from "next/headers";
-import { getPermission } from "@/lib/session";
 
 
 export default async function dashboardPage({ searchParams }) {
@@ -22,7 +21,6 @@ export default async function dashboardPage({ searchParams }) {
 
     const { total: { value: total }, hits } = await getData({ page, pageSize, ...filter })
 
-    const permission = await getPermission()
     return (
         <>
             <ExtraComponent />
@@ -31,7 +29,6 @@ export default async function dashboardPage({ searchParams }) {
                 pageSize={pageSize}
                 total={total}
                 items={hits.map(x => x._source)}
-                permission={permission}
             />
         </>
 

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Table, Space, Button, Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { BlackWhiteAddAction } from "./actions";
+import { useSession } from "next-auth/react";
 
 const { confirm } = Modal;
 
@@ -82,11 +83,11 @@ const action = {
 }
 
 
-export function TablePage({ currentPage, total, pageSize, items, permission }) {
+export function TablePage({ currentPage, total, pageSize, items }) {
   const router = useRouter()
-  if (permission == "admin" && columns.length < 5) columns.push(action);
-
-
+  const { data } = useSession()
+  const userRole = data ? data.user.userRole : "loading"
+  if (userRole == "admin" && columns.length < 5) columns.push(action);
 
   const handlePageChange = (page, pageSize) => {
     const params = new URLSearchParams({ page, pageSize })
