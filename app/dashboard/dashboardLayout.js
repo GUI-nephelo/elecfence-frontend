@@ -15,6 +15,7 @@ import { Row, Col, Dropdown, Icon, Menu, DatePicker, Layout, Button, theme, Spin
 import UserNav from "@/components/userNav";
 import { useSession } from "next-auth/react";
 import { MySpin } from "@/components/spin";
+import { title } from "@/lib/config";
 
 const { Header, Sider, Content } = Layout;
 
@@ -106,6 +107,7 @@ export default function DashboardLayoutClient({ children }) {
               height: 64,
             }}
           />
+          <h1>{title}</h1>
           <UserNav name={name} />
         </Header>
         <Content

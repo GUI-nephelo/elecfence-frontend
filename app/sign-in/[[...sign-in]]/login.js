@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSearchParams, redirect } from 'next/navigation'
 import { getCurrentSession } from "@/lib/session";
+import { title } from "@/lib/config";
+import { revalidatePath } from "next/cache";
 
 
 export default function Login({ query }) {
@@ -25,6 +27,7 @@ export default function Login({ query }) {
     });
 
     console.log(result, callbackUrl)
+    // revalidatePath("/dashboard")
 
     setIsVisible(!!result.error)
     if (!result.error) router.push(callbackUrl)
@@ -44,7 +47,7 @@ export default function Login({ query }) {
         <Card>
           {/* 展示欢迎标题 */}
           <h1 style={{ textAlign: "center", marginBottom: 20 }}>
-            欢迎来到电子围栏数据查询系统
+            欢迎来到{title}
           </h1>
           {/* 创建登录表单 */}
           <Form name="login" id="form" onFinish={onFinish}>

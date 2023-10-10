@@ -2,6 +2,7 @@
 import { dataSearchCol, dataSearchColOpt } from "@/lib/config";
 import { Button, Checkbox, Col, Input, Row } from "antd";
 import Search from "antd/es/input/Search";
+import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -34,7 +35,7 @@ export function ExtraComponent() {
         // console.log(t)
         setFilter(assign(cookies["filter"], "searchString", t))
         setSearchString(t)
-
+        // revalidatePath("/dashboard")
         router.refresh()
     }
 
