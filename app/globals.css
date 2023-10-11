@@ -92,3 +92,11 @@ a {
     color-scheme: dark;
   }
 } */
+.min-width-list {
+  min-width: 100px;
+  margin-bottom: 1rem;
+}
+
+.warn {
+  background-color: #faad14;
+}

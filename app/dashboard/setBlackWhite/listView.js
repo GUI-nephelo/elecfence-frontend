@@ -1,6 +1,5 @@
 "use client"
 import { Button, Col, Form, Input, List, Row, Space } from "antd";
-import "./list.css"
 import { useState } from "react";
 import { BlackWhiteAddAction, BlackWhiteDeleteAction } from "../actions";
 

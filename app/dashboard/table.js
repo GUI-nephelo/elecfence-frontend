@@ -127,6 +127,7 @@ export function TablePage({ currentPage, total, pageSize, items }) {
         dataSource={items.map(x => { return { ...x, samplePos: "信息港1" } })}
         // pagination={false}
         pagination={tablePaginationConfig}
+        rowClassName={(record, _) => "inBlackList" in record && record.inBlackList ? "warn" : ""}
         // scroll={{y:390}}
         bordered // 添加表格边框
       />
