@@ -19,7 +19,7 @@ export default async function dashboardPage({ searchParams }) {
     // 检测搜索字是否合法
     if (isNaN(page) || isNaN(pageSize)) return notFound()
 
-    const { total: { value: total }, hits } = await getData({ page, pageSize, ...filter })
+    const { total, hits } = await getData({ page, pageSize, ...filter })
 
     return (
         <>

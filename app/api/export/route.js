@@ -15,7 +15,7 @@ export async function GET() {
     const cookieStore = cookies()
     const filter = JSON.parse(cookieStore.get("filter").value)
 
-    const { hits } = await getData({ page: 1, pageSize: 10000, ...filter })
+    const { hits } = await getData({ page: 1, pageSize: -1, ...filter })
     // const file = fs.readFileSync("/home/Lenovo/elecfence-frontend/start.js")
 
     const __data = hits.map(x => x._source)
