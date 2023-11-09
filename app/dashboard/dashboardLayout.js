@@ -47,10 +47,12 @@ export default function DashboardLayoutClient({ children }) {
   // console.log(session)
   const { user: { name, userRole } } = session;
 
+  // console.log(name, userRole)
+
   const path = usePathname()
   const items = [getItem('表格', '1', <HomeOutlined />)];
   // 判断是否是管理员
-  if ("admin" === userRole) {
+  if ("A" === userRole) {
     items.push(getItem('管理用户', '2', <UserOutlined />))
     items.push(getItem('设置黑白名单', '3', < UnorderedListOutlined />))
   }

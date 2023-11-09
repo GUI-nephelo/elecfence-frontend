@@ -4,6 +4,7 @@ import { Table, Space, Button, Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { BlackWhiteAddAction } from "./actions";
 import { useSession } from "next-auth/react";
+import { levelCol } from "@/lib/config";
 
 const { confirm } = Modal;
 
@@ -18,13 +19,8 @@ const confirmAdd = (listname, value, onOk) => {
   });
 }
 
-// function ListPopconfirm({children}) {
-//   return (
 
-//   )
-// }
-
-const columns = [
+const basicColumns = [
   {
     title: "IMSI",
     dataIndex: "IMSI",
@@ -94,13 +90,21 @@ const columns = [
 //   )
 // }
 
+function solvedLevelCol(role) {
+  const excludeCols = levelCol[role];
+  var cols = basicColumns
+  if (excludeCols) excludeCols.forEach(key => cols = cols.filter(ele => ele.key != key));
 
-export function TablePage({ currentPage, total, pageSize, items }) {
+  return cols;
+}
+
+
+export function TablePage({ currentPage, total, pageSize, items, role }) {
   const router = useRouter()
-  // const { data } = useSession()
-  // const userRole = data ? data.user.userRole : "loading"
   // if (userRole == "admin" && columns.length < 6) columns.push(action);
-  // console.log(userRole)
+
+  const columns = solvedLevelCol(role)
+  // console.log(columns)
 
 
   const handlePageChange = (page, pageSize) => {
@@ -124,7 +128,7 @@ export function TablePage({ currentPage, total, pageSize, items }) {
     <div style={{ padding: "9px" }}>
       <Table
         columns={columns}
-        dataSource={items.map(x => { return { ...x, samplePos: "信息港1" } })}
+        dataSource={items}
         // pagination={false}
         pagination={tablePaginationConfig}
         rowClassName={(record, _) => "inBlackList" in record && record.inBlackList ? "warn" : ""}

@@ -1,9 +1,17 @@
 "use client"
 import React, { useState } from 'react';
-import { Form, Input, Button, Table, Space, Modal, message } from 'antd';
+import { Form, Input, Button, Table, Space, Modal, message, Select } from 'antd';
 import { userMgeAddAction, userMgeDeleteAction } from '../actions';
 
 const { confirm } = Modal;
+
+const level = [
+    { value: 'A', label: '最高管理员' },
+    { value: 'B', label: '数据管理员' },
+    { value: 'C', label: '数据访客' },
+    { value: 'D', label: '访客' }
+]
+
 
 const UserManagement = ({ initialList }) => {
 
@@ -15,6 +23,7 @@ const UserManagement = ({ initialList }) => {
             const newUser = {
                 user: values.user,
                 pass: values.pass,
+                role: values.role
             };
             setUsers([...users, newUser]);
             form.resetFields();
@@ -54,6 +63,12 @@ const UserManagement = ({ initialList }) => {
         { title: '用户名', dataIndex: 'user', key: 'user' },
         { title: '密码', dataIndex: 'pass', key: 'pass' },
         {
+            title: '权限', dataIndex: 'role', key: 'role',
+            render: obj => {
+                return level.filter(x => x.value == obj)[0].label
+            }
+        },
+        {
             title: 'Action',
             key: 'action',
             render: obj => (
@@ -65,12 +80,18 @@ const UserManagement = ({ initialList }) => {
     ];
     return (
         <div>
-            <Form form={form} onFinish={__userMgeAddAction} layout="inline">
+            <Form form={form} onFinish={__userMgeAddAction} layout="inline" >
                 <Form.Item name="user" label="用户名" rules={[{ required: true, message: 'Please input name' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="pass" label="密码" rules={[{ required: true, message: 'Please input pass' }]}>
                     <Input />
+                </Form.Item>
+                <Form.Item name="role" label="权限" rules={[{ required: true, message: 'Please input role' }]}>
+                    <Select
+                        style={{ width: "8rem" }}
+                        options={level}
+                    />
                 </Form.Item>
                 <Form.Item >
                     <Button type="primary" htmlType="submit" >添加用户</Button>

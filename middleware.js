@@ -36,7 +36,7 @@ export default withAuth(
 
 
         // `/admin` requires admin role
-        if (protectedPath.includes(req.nextUrl.pathname) && jwt.userRole != "admin") {
+        if (protectedPath.includes(req.nextUrl.pathname) && jwt.userRole != "A") {
             return new NextResponse(
                 JSON.stringify({ success: false, message: 'Permission dened', token: jwt }),
                 { status: 401, headers: { 'content-type': 'application/json' } }

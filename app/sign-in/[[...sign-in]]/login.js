@@ -26,7 +26,7 @@ export default function Login({ query }) {
       callbackUrl: callbackUrl
     });
 
-    console.log(result, callbackUrl)
+    // console.log(result, callbackUrl)
     // revalidatePath("/dashboard")
 
     setIsVisible(!!result.error)
