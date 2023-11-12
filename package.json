@@ -13,6 +13,7 @@
     "@elastic/elasticsearch": "^8.10.0",
     "antd": "^5.8.5",
     "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.10",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "eventsource": "^2.0.2",
