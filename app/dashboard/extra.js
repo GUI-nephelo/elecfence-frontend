@@ -4,7 +4,7 @@ import { Button, Checkbox, Col, DatePicker, Row } from "antd";
 import Search from "antd/es/input/Search";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -18,6 +18,7 @@ function assign(obj, k, v) {
 
 export function ExtraComponent({ role }) {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [cookies, setCookie] = useCookies()
     const setFilter = (v) => { setCookie("filter", v, { path: "/" }) }
 
@@ -39,16 +40,21 @@ export function ExtraComponent({ role }) {
         }
     }, [router])
 
-    const onSearch = async t => {
-
-        setFilter(assign(cookies["filter"], "searchString", t))
-        setSearchString(t)
-        // revalidatePath("/dashboard")
+    const refreshSearch = () => {
+        const params = new URLSearchParams(searchParams)
+        params.set("page", '1')
+        router.push("/dashboard?" + params.toString())
         router.refresh()
     }
 
+    const onSearch = async t => {
+        setFilter(assign(cookies["filter"], "searchString", t))
+        setSearchString(t)
+        // revalidatePath("/dashboard")
+        refreshSearch()
+    }
+
     const onColCheckBoxChange = async v => {
-        // console.log(v)
         setFilter(assign(cookies["filter"], "whichCol", v))
         setWhichCol(v)
     }
@@ -57,7 +63,7 @@ export function ExtraComponent({ role }) {
         const range = Array.isArray(v) ? v.map(x => (x == null ? x : x.$d.getTime())) : [null, null]
         setFilter(assign(cookies["filter"], "dateRange", range))
         setDateRange(Array.isArray(v) ? v : [null, null])
-        router.refresh()
+        refreshSearch()
     }
 
     return (
