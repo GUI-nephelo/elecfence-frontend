@@ -1,0 +1,19 @@
+
+{
+    http_port 8080
+}
+:3000 {
+    handle_path /_api/X {
+         rewrite * /_header
+        # header * X-Forwarded-For {remote_host}
+        reverse_proxy localhost:8000
+    }
+    handle_path /api/notification {
+        header X-Forwarded-For {>X-Forwarded-For}
+        rewrite * /realTimeData/sse
+        # header * X-Forwarded-For {remote_host}
+        reverse_proxy localhost:8000
+    }
+
+    reverse_proxy * 127.0.0.1:3001
+}

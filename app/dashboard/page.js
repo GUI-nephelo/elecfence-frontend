@@ -16,6 +16,8 @@ export default async function dashboardPage({ searchParams }) {
     const cookieStore = cookies()
     const filter = JSON.parse((cookieStore.get("filter") || { value: "{}" }).value)
 
+    // console.log(filter)
+
     // 检测搜索字是否合法
     if (isNaN(page) || isNaN(pageSize)) return notFound()
 
@@ -33,13 +35,17 @@ export default async function dashboardPage({ searchParams }) {
     return (
         <>
             <ExtraComponent role={userRole} />
-            <TablePage
-                role={userRole}
-                currentPage={page}
-                pageSize={pageSize}
-                total={total}
-                items={items}
-            />
+            {
+                (filter.searchString ||
+                    (filter.dateRange ? (filter.dateRange[0] || filter.dateRange[1]) : false)) &&
+                <TablePage
+                    role={userRole}
+                    currentPage={page}
+                    pageSize={pageSize}
+                    total={total}
+                    items={items}
+                />
+            }
         </>
 
     )

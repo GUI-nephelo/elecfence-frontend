@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { BlackWhiteAddAction } from "./actions";
 import { useSession } from "next-auth/react";
 import { levelCol } from "@/lib/config";
+import { useNotification } from "./NotificationContext";
 
 const { confirm } = Modal;
 
@@ -101,7 +102,10 @@ function solvedLevelCol(role) {
 
 export function TablePage({ currentPage, total, pageSize, items, role }) {
   const router = useRouter()
+  const notification = useNotification()
   // if (userRole == "admin" && columns.length < 6) columns.push(action);
+
+  if (notification?.event == "newDataPushed") router.refresh()
 
   const columns = solvedLevelCol(role)
   // console.log(columns)

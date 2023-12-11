@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // async rewrites() {
-    //     return [
-    //         { source: '/apis/:path*', destination: 'http://111.67.193.80:8888/:path*' }
-    //     ]
-    // },
+    async rewrites() {
+        return {
+            afterFiles:
+                [
+                    // { source: '/api/notification', destination: 'http://127.0.0.1:8000/realTimeData/sse' }
+                ]
+        }
+    },
     experimental: {
         serverActions: true,
     }

@@ -3,6 +3,7 @@ import { withAuth } from "next-auth/middleware"
 import { NextResponse } from 'next/server'
 import { protectedPath } from "./lib/config"
 
+
 // More on how NextAuth.js middleware works: https://next-auth.js.org/configuration/nextjs#middleware
 // export default withAuth({
 //   callbacks: {
@@ -22,9 +23,21 @@ export default withAuth(
         const jwt = await getToken({ req })
         // console.log(req.url)
         // console.log(req)
+        // console.log(req.nextUrl.pathname)
         const isAuthPage = req.nextUrl.pathname.startsWith("/sign-in")
         if (req.nextUrl.pathname === "/jwt")
             return NextResponse.json(req.nextauth)
+
+        // if (req.nextUrl.pathname === "/api/notification") {
+        //     const rewrite = NextResponse.rewrite("http://127.0.0.1:8000/realTimeData/sse", {
+        //         headers: {
+        //             asd: 1,
+        //             connection: "keep-alive"
+        //         }
+        //     })
+        //     console.log(rewrite)
+        //     return rewrite
+        // }
         if (!!jwt) {
             if (req.nextUrl.pathname === "/sign-in" || req.nextUrl.pathname === "/")
                 return NextResponse.redirect(new URL("/dashboard", req.url))
@@ -45,8 +58,8 @@ export default withAuth(
             //     <h1>Permission dened</h1>
             // )
         }
-        return NextResponse.next()
 
+        return NextResponse.next()
     },
     {
         callbacks: {
@@ -56,4 +69,6 @@ export default withAuth(
         },
     }
 )
-export const config = { matcher: ["/dashboard/:path*", "/", "/apis/:path*", "/sign-in(.*)", "/jwt", "/api/export"] }
+export const config = {
+    matcher: ["/dashboard/:path*", "/", "/apis/:path*", "/sign-in(.*)", "/jwt", "/api/export", "/api/notification"]
+}
