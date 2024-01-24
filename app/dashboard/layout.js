@@ -3,8 +3,7 @@ import { NotificationProvider } from "./NotificationContext";
 import DashboardLayoutClient from "./dashboardLayout";
 
 
-export default async function DashboardLayout({ children }) {
-  // const session = await getCurrentSession()
+export default function DashboardLayout({ children }) {
   return (
     <NotificationProvider>
       <DashboardLayoutClient>

@@ -16,7 +16,7 @@ export function NotificationProvider({ children }) {
     useEffect(() => {
         // 在这里订阅 SSE 事件并更新通知状态
         const eventSource = new EventSource('/api/notification');
-
+        console.log("eventSource On")
         eventSource.addEventListener('message', (event) => {
             const data = JSON.parse(event.data);
             setNotification(data);

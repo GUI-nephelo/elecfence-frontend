@@ -104,8 +104,10 @@ export function TablePage({ currentPage, total, pageSize, items, role }) {
   const router = useRouter()
   const notification = useNotification()
   // if (userRole == "admin" && columns.length < 6) columns.push(action);
+  useEffect(() => {
+    if (notification?.event == "newDataPushed") router.refresh()
+  }, [notification])
 
-  if (notification?.event == "newDataPushed") router.refresh()
 
   const columns = solvedLevelCol(role)
   // console.log(columns)
