@@ -47,7 +47,7 @@ function FileImportForm({ name, label, handleAdd }) {
 
 
     return (
-        <Upload accept=".xlsx,.xls,.csv" beforeUpload={onUpload}>
+        <Upload accept=".xlsx,.xls" beforeUpload={onUpload}>
             <Button icon={<UploadOutlined />}>导入{label}</Button>
         </Upload>
     )
